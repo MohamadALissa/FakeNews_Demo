@@ -1,0 +1,210 @@
+{% extends "FakeNews_app/base2.html" %}
+{% block content %}
+<style>
+  div .input {
+    display: inline-block;
+    width:  200px;
+}
+    .slidecontainer {
+      width: 100%;
+    }
+    
+    .slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 15px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+    }
+    
+    .slider:hover {
+      opacity: 1;
+    }
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: #4CAF50;
+      cursor: pointer;
+    }
+
+    div .content-section2{
+      display: block;
+    }
+    .content-section2 {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+    </style>
+
+<script>
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = slider.value;
+    
+    slider.oninput = function() {
+      output.innerHTML = this.value;
+    }
+    </script>
+
+<div class="media content-section2">  
+  
+    <p style="color: green"> You have got this content to sign:</p>
+    
+  <article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.author }}</a>
+        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+        {% if object.author == user %}
+          <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+            <a class="btn btn-primary btn-sm mt-1 mb-1" href="{% url 'sign-cosi' object.id %}">Send to Sign</a>
+          </div>
+        {% endif %}
+      </div>
+      <h2 class="article-title">{{ object.title }}</h2>
+      <p class="article-content">{{ object.content }}</p>
+    </div>
+  </article>
+  <a style="width: 100px ;" class="btn btn-success btn-sm mt-1 mb-1" href="#">Sign</a>
+  <a style="width: 100px ;" class="btn btn-info btn-sm mt-1 mb-1" href="#">Ignore</a>
+         
+</div>
+
+{% endblock content %}
+
+
+
+{% block sideBar %}
+{% if object.author == user %}
+<div class="col-md-4">
+  <div class="content-section">
+    <h3>Trusted Parties List</h3>
+    <p class='text-muted'>You can pick the appraiser actor you'd like.
+    <form action="/action_page.php">
+      <div class="input" >
+      <input type="checkbox" name="witnes" value="BBC"> BBC
+      </div>
+      <div class="input">
+          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+        </div>
+        <div class="input">
+      <input type="checkbox" name="witnes" value="Smith" checked> Prof Smith<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    <div class="input">
+      <input type="checkbox" name="witnes" value="John"> Mr. John<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+      <div class="input">
+      <input type="checkbox" name="witnes" value="Michael" checked> Dr. Michael<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    <div class="input">
+      <input type="checkbox" name="witnes" value="Sally">Dr. Sally<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    <div class="input">
+      <input type="checkbox" name="witnes" value="Mark" checked>Mr. Mark<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    <div class="input">
+      <input type="checkbox" name="witnes" value="Steve">Mr. Steve<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    <div class="input">
+      <input type="checkbox" name="witnes" value="Mat" checked>Mr. Mat<br>
+    </div>
+    <div class="input">
+        <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+      </div>
+    </form>
+    </p>
+  </div>
+</div>
+  {% else %}
+  <div class="col-md-4">
+    <div class="content-section">
+      <h3>Our Sidebar</h3>
+      <p class='text-muted'>You can put any information here you'd like.
+        <ul class="list-group">
+          <li class="list-group-item list-group-item-light">Latest Posts</li>
+          <li class="list-group-item list-group-item-light">Announcements</li>
+          <li class="list-group-item list-group-item-light">Calendars</li>
+          <li class="list-group-item list-group-item-light">etc</li>
+        </ul>
+      </p>
+    </div>
+  </div>
+  {% endif %}
+  {% endblock sideBar %}
+  {% block signature %}
+  {% if object.author != user %}
+
+  <div class="content-section">
+  <p style="text-indent: 300px; font-family: Comic Sans MS"> Aggregated Signature</p>
+  <a class="btn btn-secondary btn-sm mt-1 mb-1" href="#">Signature Verify</a>
+  <p style="background-color:lightskyblue; border-radius: 4px;display: inline-block">cf8c120ff472af2ce60042ae3de334ceba932769c2985cadf533464eabc6da0a</p>
+  <style>
+        ul {
+          list-style: none;
+           }
+        ul li:before {
+          content: '✓';
+          }
+  </style>
+  <ul style="float: left">
+      <li>Prof Smith</li>
+      <li>Dr. Michael</li>
+      <li>Mr. Mat</li>
+    </ul> 
+    <img src="/media/Rank.png" alt="trustworthiness rank" height="150" width="150" style="margin-left: 150px;">
+
+  </div>
+  
+    
+  {% else %}
+  <div></div>
+  {% endif %}
+  {% endblock signature %}
+  
+
+
+
+
+  
+  
+  
